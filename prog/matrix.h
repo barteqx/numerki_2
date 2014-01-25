@@ -39,7 +39,7 @@ class Matrix {
   // Access the row and column sizes                                                                                                                                                                                              
   unsigned int get_size() const;
 
-  friend std::ostream& operator<<(std::ostream& out, Matrix & m);
+  std::ostream& operator<<(std::ostream& out, Matrix & m);
 };
 
 class HillbertMatrix : public Matrix {
@@ -54,12 +54,12 @@ class PeyaMatrix : public Matrix {
 
 double norm_inf(vector<double> & vec);
 
-std::vector<double> operator-(std::vector<double> & lhs, std::vector<double> & rhs);
+std::vector<double> operator-(const std::vector<double> & lhs, const std::vector<double> & rhs);
 
-std::vector<double> operator+(std::vector<double> & lhs, std::vector<double> & rhs);
+std::vector<double> operator+(const std::vector<double> & lhs, const std::vector<double> & rhs);
 
 std::ostream& operator<<(std::ostream& out, const std::vector<double>& vec);
 
-std::ostream& operator<<(std::ostream& out, Matrix & m);
+std::ostream& operator<<(std::ostream& out, const Matrix & m);
 
 #endif

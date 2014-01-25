@@ -67,7 +67,7 @@ std::vector<double> Matrix::operator*(const std::vector<double>& rhs) {
   return vec;
 }
 
-Matrix Matrix::operator*(Matrix& rhs) {
+Matrix Matrix::operator*(const Matrix& rhs) {
   Matrix new_matrix(size, 0.0);
   for (int i = 0; i < size; i++) {
     for(int j = 0; j < size; j++) {
@@ -153,7 +153,7 @@ double norm_inf(vector<double> & vec) {
   return max;
 }
 
-std::vector<double> operator-(std::vector<double> & lhs, std::vector<double> & rhs) {
+std::vector<double> operator-(const std::vector<double> & lhs, const std::vector<double> & rhs) {
   std::<vector> vec;
   vec.resize(lhs.size());
   for (int i = 0; i < vec.size(); i++) vec[i] = lhs[i] - rhs[i];
@@ -161,7 +161,7 @@ std::vector<double> operator-(std::vector<double> & lhs, std::vector<double> & r
   return vec;
 }
 
-std::vector<double> operator+(std::vector<double> & lhs, std::vector<double> & rhs) {
+std::vector<double> operator+(const std::vector<double> & lhs, const std::vector<double> & rhs) {
   std::<vector> vec;
   vec.resize(lhs.size());
   for (int i = 0; i < vec.size(); i++) vec[i] = lhs[i] + rhs[i];
