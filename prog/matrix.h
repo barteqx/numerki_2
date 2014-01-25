@@ -2,7 +2,7 @@
 #define __MATRIX_H
 
 #include <vector>
-#include <str
+#include <string>
 
 class Matrix {
  private:
@@ -37,8 +37,9 @@ class Matrix {
   const double operator()(unsigned int row, unsigned int col) const;
 
   // Access the row and column sizes                                                                                                                                                                                              
-  unsigned int  get_size() const;
+  unsigned int get_size() const;
 
+  friend std::ostream& operator<<(std::ostream& out, Matrix & m);
 };
 
 class HillbertMatrix : public Matrix {
@@ -58,5 +59,7 @@ std::vector<double> operator-(std::vector<double> & lhs, std::vector<double> & r
 std::vector<double> operator+(std::vector<double> & lhs, std::vector<double> & rhs);
 
 std::ostream& operator<<(std::ostream& out, const std::vector<double>& vec);
+
+std::ostream& operator<<(std::ostream& out, Matrix & m);
 
 #endif

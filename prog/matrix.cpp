@@ -173,5 +173,17 @@ std::ostream& operator<<(std::ostream& out, const std::vector<double>& vec) {
   out << "[ ";
   for (int i = 0; i < vec.size(); i++) 
     out << vec[i] << " ";
+  out << "]"
+  return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const Matrix & m) {
+
+  out << std::endl;
+  for (int i = 0; i < m.get_size(); i++) {
+    for (int j = 0; j < m.get_size(); j++) 
+      out << m(i,j) << " ";
+    out << std::endl;
+  }
   return out;
 }
