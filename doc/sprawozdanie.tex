@@ -1,0 +1,82 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{lmodern}
+\usepackage{polski}
+\usepackage{tikz}
+\usepackage{siunitx,booktabs}
+
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+\title{Aproksymacja rozwiązań układów równań metodą Jacobiego i Seidla}
+\author{Bartosz Zasieczny}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Treść zadania}
+
+Za pomocą metod Jacobiego i Siedla wyznaczyć przybliżone rozwiązanie $ \tilde{x} $ 
+układu równań liniowych $ Ax = b $ ($ A = [a_{i,j}] \in \mathbb{R}^{n \times n} $), 
+przyjmując że $ \tilde{x} = x^{(k)} $, gdzie $ k $ jest najmniejszą liczbą naturalną 
+dla której zachodzi nierówność:
+
+$$ \frac{\norm{ x^{(k)} - x^{(k-1)}}_{\infty}}{\norm{x^{(k)}}_{\infty}} < \epsilon. $$
+
+Wykonać obliczenia kontrolne m. in. dla macierzy Pei i Hillberta i omówić wyniki, 
+podając wartość $ \norm{b - A \tilde{x}}_{\infty} $, gdzie $ \tilde{x} $ jest 
+obliczonym rozwiązaniem, jak również przyjmując różne wartości parametrów $n$ i $d$. 
+Można założyć, że rozwiązaniem dokładnym jest wektor $ e := [1,1,...,1]^T $ lub, 
+inaczej mówiąc, że $ b := Ae $.
+
+\section{Algorytmy}
+\subsection{Metoda Jacobiego}
+  \textbf{Metoda Jacobiego} jest metodą iteracyjną, gdzie kolejne przybliżenia 
+  rozwiązania układu równań $ Ax = b $ znajdujemy poprzez rozwiązanie poniższego 
+  równania na macierzach:
+  
+  $$ x^{k+1} = Mx^k + Nb $$
+  gdzie:
+  $$ N = D^{-1} $$
+  $$ M = -N(L+U) $$
+  $$ 
+  D[i,j] =  \left\{\begin{array}{l l}
+        A[i,j] & \quad i=j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  $$
+  L[i,j] =  \left\{\begin{array}{l l}
+        A[i,j] & \quad i < j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  $$
+  U[i,j] = \left\{\begin{array}{l l}
+        A[i,j] & \quad i > j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  Natomiast $ x^0 $ jest wektorem zerowym.
+  
+\subsection{Metoda Gaussa-Seidla}
+  \textbf{Metoda Gaussa-Seidla} różni się od poprzedniej tylko wzorem, za 
+  pomocą którego wyznaczamy następne iteracje:
+  
+  $$ x^{k+1} = Nb + -NLx^k - NUx^k $$
+
+\section{Przykładowe rozwiązania}
+\subsection{Macierz Pei}
+\subsubsection{Metoda Jacobiego}
+\subsubsection{Metoda Seidla}
+
+\subsection{Macierz Hillberta}
+\subsubsection{Metoda Jacobiego}
+\subsubsection{Metoda Seidla}
+
+ 
+\end{document}

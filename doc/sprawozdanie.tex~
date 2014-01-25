@@ -1,0 +1,51 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{lmodern}
+\usepackage{polski}
+\usepackage{tikz}
+\usepackage{siunitx,booktabs}
+
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+\title{Aproksymacja rozwiązań układów równań metodą Jacobiego i Seidla}
+\author{Bartosz Zasieczny}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Treść zadania}
+
+Za pomocą metod Jacobiego i Siedla wyznaczyć przybliżone rozwiązanie $ \tilde{x} $ 
+układu równań liniowych $ Ax = b $ ($ A = [a_{i,j}] \in \mathbb{R}^{n \times n} $), 
+przyjmując że $ \tilde{x} = x^{(k)} $, gdzie $ k $ jest najmniejszą liczbą naturalną 
+dla której zachodzi nierówność:
+
+$$ \frac{\norm{ x^{(k)} - x^{(k-1)}}_{\infty}}{\norm{x^{(k)}}_{\infty}} < \epsilon. $$
+
+Wykonać obliczenia kontrolne m. in. dla macierzy Pei i Hillberta i omówić wyniki, 
+podając wartość $ \norm{b - A \tilde{x}}_{\infty} $, gdzie $ \tilde{x} $ jest 
+obliczonym rozwiązaniem, jak również przyjmując różne wartości parametrów $n$ i $d$. 
+Można założyć, że rozwiązaniem dokładnym jest wektor $ e := [1,1,...,1]^T $ lub, 
+inaczej mówiąc, że $ b := Ae $.
+
+\section{Algorytmy}
+\subsection{Metoda Jacobiego}
+
+\subsection{Metoda Seidla}
+
+\section{Przykładowe rozwiązania}
+\subsection{Macierz Pei}
+\subsubsection{Metoda Jacobiego}
+\subsubsection{Metoda Seidla}
+
+\subsection{Macierz Hillberta}
+\subsubsection{Metoda Jacobiego}
+\subsubsection{Metoda Seidla}
+
+ 
+\end{document}
