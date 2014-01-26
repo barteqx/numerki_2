@@ -5,12 +5,11 @@
 \usepackage{amsfonts}
 \usepackage{lmodern}
 \usepackage{polski}
-\usepackage{tikz}
 \usepackage{siunitx,booktabs}
 
 \newcommand{\norm}[1]{\lVert#1\rVert}
 
-\title{Aproksymacja rozwiązań układów równań metodą Jacobiego i Seidla}
+\title{Aproksymacja rozwiązań układów równań metodą Jacobiego i Gaussa-Seidla}
 \author{Bartosz Zasieczny}
 
 \begin{document}
@@ -29,9 +28,8 @@ $$ \frac{\norm{ x^{(k)} - x^{(k-1)}}_{\infty}}{\norm{x^{(k)}}_{\infty}} < \epsil
 
 Wykonać obliczenia kontrolne m. in. dla macierzy Pei i Hillberta i omówić wyniki, 
 podając wartość $ \norm{b - A \tilde{x}}_{\infty} $, gdzie $ \tilde{x} $ jest 
-obliczonym rozwiązaniem, jak również przyjmując różne wartości parametrów $n$ i $d$. 
-Można założyć, że rozwiązaniem dokładnym jest wektor $ e := [1,1,...,1]^T $ lub, 
-inaczej mówiąc, że $ b := Ae $. Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10^{-7} $.
+obliczonym rozwiązaniem, jak również przyjmując różne wartości parametrów $n$ i $d$.
+Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10^{-7} $.
 
 \section{Algorytmy}
 \subsection{Metoda Jacobiego}
@@ -39,7 +37,7 @@ inaczej mówiąc, że $ b := Ae $. Obliczenia wykonać dla $ \epsilon = 5 \cdot 
   rozwiązania układu równań $ Ax = b $ znajdujemy poprzez rozwiązanie poniższego 
   równania na macierzach:
   
-  $$ x_{k+1} = Mx_k + Nb $$
+  $$ x^{(k+1)} = Mx^{(k)} + Nb $$
   gdzie:
   $$ N = D^{-1} $$
   $$ M = -N(L+U) $$
@@ -62,12 +60,18 @@ inaczej mówiąc, że $ b := Ae $. Obliczenia wykonać dla $ \epsilon = 5 \cdot 
         \end{array}\right.
   $$
   Natomiast $ x^0 $ jest wektorem zerowym.
+  Bezpośredni wzór na kolejne wartości wektora $x^{(k+1)}$ to:
+  
+  $$ x^{(k+1)}_i = \frac {b_i - \sum_{j=1; j \neq i }^n a_{ij} x^{(k)}_j} { a_{ii} } $$
   
 \subsection{Metoda Gaussa-Seidla}
   \textbf{Metoda Gaussa-Seidla} różni się od poprzedniej tylko wzorem, za 
   pomocą którego wyznaczamy następne iteracje:
   
-  $$ x_{k+1} = Nb + -NLx_k - NUx_k $$
+  $$ x^{(k+1)} = (D -L)^{-1} \cdot (Ux^{(k)} + b) $$
+  A bezpośredni wzór na kolejne wartosci wektora $x^{(k+1)}$ to:
+  
+  $$ x^{(k+1)}_i = \frac {b_i - \sum_{j = 1}^{i-1} a_{ij} x^{(k+1)}_j - \sum_{j=i+1}^n a_{ij} x^{(k)}_j} { a_{ii} } $$
 
 \section{Przykładowe rozwiązania}
 \subsection{Macierz Pei}
@@ -78,14 +82,110 @@ inaczej mówiąc, że $ b := Ae $. Obliczenia wykonać dla $ \epsilon = 5 \cdot 
             1 & \quad \textrm{w p. p.}
         \end{array}\right.
     $$
-    , gdzie $d$ jest podanym parametrem rzeczywistym, a $ (i, j = 1, 2, \dots, n) $. 
+    gdzie $d$ jest podanym parametrem rzeczywistym, a $ (i, j = 1, 2, \dots, n) $. 
+    
+    Uwarunkowanie tej macierzy jest tym lepsze im większa jest wartość bezwzględna d. Metoda Gaussa-Seidla jest szybciej zbieżna
 \subsubsection{Metoda Jacobiego}
-\subsubsection{Metoda Seidla}
+  \begin{itemize}
+    \item $ n = 5 $, $ b = [3, 4, 5, 6, 7]^T$, $ d = 1 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+    Brak wyniku po 510 iteracjach. Algorytm się zapetla, gdyż wartość błędu bezwzlędnego międyz 
+    kolejnymi iteracjami nie zmniejsza się i liczby szybko rosną do wartości wykraczających poza 
+    arytmetykę double i dalsze obliczenia nie są możliwe.
+    
+    Polecenie: \texttt{./program -peya 1 -p 0.0000005 -v 5 3 4 5 6 7 -j}
+    
+    \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = -20 $, $ \epsilon = 5 \cdot 10^{-7} $
+  \end{itemize}
+\subsubsection{Metoda Gaussa-Seidla}
+  Ten algorytm dał parę interesujących wyników:
+  \begin{itemize}
+    \item $ n = 5 $, $ b = [3, 4, 5, 6, 7]^T$, $ d = 1 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+      Jak widać, choć macierz ta nie powinna mieć jakiegokolwiek rozwiązania, algorytm po bardzo wielu iteracjach
+       (2000002) zatrzymuje się i daje następujacą odpowiedź:
+      $$ x^{(2000002)} = [-8000000, 2000000, 2000000, 2000000, 2000000]$$
+      $$ e = 5 \cdot 10^{-7} $$
+      Widzimy więc, że dla $ d = 1 $ zadanie to jest \textbf{bardzo źle} uwarunkowane, ponieważ algorytm
+      zwraca wynik, podczas gdy rozwiązanie nie istnieje.
+      
+      Polecenie: \texttt{./program -peya 1 -p 0.0000005 -v 5 3 4 5 6 7 -gs}
+      
+    \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = -20 $, $ \epsilon = 5 \cdot 10^{-7} $
+      
+      Zadowalajacy wynik w tym wypadku osiągamy bardzo szybko - zaledwie 12 iteracji.
+      \begin{align*}
+        x^{(12)} = [-0.467532, -0.515151, -0.56277, -0.610389, -0.658008, \\ -0.705627, -0.753247, -0.800866, -0.848485, -0.896104]
+      \end{align*}
+      $$ e = 2.98036 \cdot 10^{-7} $$
+      
+      Polecenie: \texttt{./program -peya -20 -p 0.0000005 -v 10 3 4 5 6 7 8 9 10 11 12 -gs}
+      
+    \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = 10000 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+      Przy takiej wartości $ n $ algorytm daje wynik już po 3 iteracjach:
+        
+      \begin{align*}
+        x^{(3)} = [0.000299281, 0.000399291, 0.000499301, 0.000599311, 0.000699321, \\ 0.000799331, 0.000899341, 0.000999351, 0.00109936, 0.00119937]
+      \end{align*}
+      $$ e = 2.89817 \cdot 10^{-7} $$
+      
+      Polecenie: \texttt{./program -peya 10000 -p 0.0000005 -v 10 3 4 5 6 7 8 9 10 11 12 -gs}  
+  \end{itemize}
 
 \subsection{Macierz Hillberta}
   \textbf{Macierz Hillberta} jest dana następujacym wzorem:
-\subsubsection{Metoda Jacobiego}
-\subsubsection{Metoda Seidla}
+    
+    $$ H_{ij} = \frac {1} {i + j + 1} \: (i, j = 1, 2, \dots, n) $$
+    
+  \textbf{Macierz Hillberta} jest macierzą źle uwarunkowaną numerycznie -- wartości 
+  elementów macierzy maleją w kierunku zera wraz z rosnącymi indeksami, a gdy je (elementy macierzy)
+  mnożymy to dostajemy jeszcze mniejsze wartości, przez co dochodzi do utraty cyfr znaczących
+  i algorytm Jacobiego przestaje być zbieżny dla tej macierzy, a algorytm Gaussa-Seidla 
+  zbiega bardzo wolno. Potwierdza się też wcześniejsza obserwacja, że 
+  \textbf{metoda Gaussa-Siedla} jest szybciej zbieżna. Wyniki aproksymacji rozwiązania 
+  układów dla obu metod to kolejno:
+    \subsubsection{Metoda Jacobiego}
+      $$ b = [3, 4]^T $$
+    \begin{itemize}
+      \item $ \epsilon = 5 \cdot 10^{-5} $ -- 257 iteracji, $ x^{(257)} = [-95.9992, 139.999]^T $, $ e = 4.80048 \cdot 10^{-5} $,
+            polecenie: \texttt{./program -hillbert -p 0.00005 -v 2 3 4 -j}
+      \item $ \epsilon = 5 \cdot 10^{-7} $ -- 399 iteracji, $ x^{(399)} = [-95.9998, 140]^T $, $ e = 4.91055 \cdot 10^{-7} $,
+            polecenie: \texttt{./program -hillbert -p 0.0000005 -v 2 3 4 -j}
+    \end{itemize}
+    
+    $$ b = [3, 4, 5]^T $$
+    \begin{itemize}
+      \item $ \epsilon = 5 \cdot 10^{-5} $ -- 1089 iteracji, brak rozwiązania,
+            polecenie: \texttt{./program -hillbert -p 0.00005 -v 3 3 4 5 -j}
+      \item $ \epsilon = 5 \cdot 10^{-7} $ -- 1089 iteracji, brak rozwiązania,
+            polecenie: \texttt{./program -hillbert -p 0.0000005 -v 3 3 4 5 -j}
+    \end{itemize}
+    
+    \subsubsection{Metoda Gaussa-Seidla}
+      $$ b = [3, 4]^T $$
+    \begin{itemize}
+      \item $ \epsilon = 5 \cdot 10^{-5} $ -- 112 iteracji, $ x^{(112)} = [-95.9187, 139.898]^T $, $ e = 4.8418 \cdot 10^{-5} $,
+            polecenie: \texttt{./program -hillbert -p 0.00005 -v 2 3 4 -gs}
+      \item $ \epsilon = 5 \cdot 10^{-7} $ -- 183 iteracje, $ x^{(183)} = [-95.9992, 139.999]^T $, $ e = 4.95057 \cdot 10^{-7} $,
+            polecenie: \texttt{./program -hillbert -p 0.0000005 -v 2 3 4 -gs}
+    \end{itemize}
+    
+    $$ b = [3, 4, 5]^T $$
+    \begin{itemize}
+      \item $ \epsilon = 5 \cdot 10^{-5} $ -- 1723 iteracje, $ x^{(1723)} = [438.496, -1643.71, 1338.76]^T $, $ e = 4.9969 \cdot 10^{-5} $,
+            polecenie: \texttt{./program -hillbert -p 0.00005 -v 3 3 4 5 -gs}
+      \item $ \epsilon = 5 \cdot 10^{-7} $ -- 3751 iteracji, $ x^{(3751)} = [449.883, -1679.63, 1364.73]^T $, $ e = 4.99272 \cdot 10^{-7} $,
+            polecenie: \texttt{./program -hillbert -p 0.0000005 -v 3 3 4 5 -gs}
+    \end{itemize}
+    
+     $$ b = [3, 4, 5, 6, 7]^T $$
+    \begin{itemize}
+      \item $ \epsilon = 5 \cdot 10^{-7} $ -- 655824 iteracji, $ x^{(655824)} = [2887.91, -31059.7, 104369, -137452, 61880.9]^T $, $ e = 4.99999 \cdot 10^{-7} $,
+            polecenie: \texttt{./program -hillbert -p 0.0000005 -v 5 3 4 5 6 7 -gs}
+    \end{itemize}
+    
+    
 
 \section{Kompilacja i obsługa programu}
     \subsection{Wymagania}
