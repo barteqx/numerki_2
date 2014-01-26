@@ -21,7 +21,7 @@
     }
     std::vector<double> e = next - current;
     error = norm_inf(e)/norm_inf(next);
-    std::cout << std::fixed << std::setprecision(9) << iteration << ": " << next << " error: " << error << std::endl;
+    std::cout << std::setprecision(9) << iteration << ": " << next << " error: " << error << std::endl;
     current = next;
   } while (fabs(error) >= precision);
 }
@@ -44,7 +44,7 @@ void gauss_seidel_method(Matrix & m, std::vector<double> & b, double precision) 
     }
     std::vector<double> e = next - current;
     error = norm_inf(e)/norm_inf(next);
-    std::cout << std::fixed << std::setprecision(9) << iteration << ": " << next << " error: " << error << std::endl;
+    std::cout << std::setprecision(9) << iteration << ": " << next << " error: " << error << std::endl;
     current = next;
   } while (fabs(error) >= precision);
 

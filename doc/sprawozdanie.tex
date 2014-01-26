@@ -84,7 +84,8 @@ Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10
     $$
     gdzie $d$ jest podanym parametrem rzeczywistym, a $ (i, j = 1, 2, \dots, n) $. 
     
-    Uwarunkowanie tej macierzy jest tym lepsze im większa jest wartość bezwzględna d. Metoda Gaussa-Seidla jest szybciej zbieżna
+    Uwarunkowanie tej macierzy jest tym lepsze, im większa jest wartość bezwzględna d. Metoda 
+    Gaussa-Seidla jest szybciej zbieżna i bardziej odporna na gorsze uwarunkowanie zadanej macierzy.
 \subsubsection{Metoda Jacobiego}
   \begin{itemize}
     \item $ n = 5 $, $ b = [3, 4, 5, 6, 7]^T$, $ d = 1 $, $ \epsilon = 5 \cdot 10^{-7} $
@@ -95,7 +96,34 @@ Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10
     
     Polecenie: \texttt{./program -peya 1 -p 0.0000005 -v 5 3 4 5 6 7 -j}
     
+    \item $ n = 3 $, $ b = [2, 3, 4]^T$, $ d = 2 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+      Program się zapętla podobnie jak w pierwszym przykładzie - powód podobny. 
+      Algorytm zamiast zbiegać do rozwiązania - rozbiega się.
+      
+      Polecenie: \texttt{./program -peya 2 -p 0.0000005 -v 3 2 3 4 -j}
+    
     \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = -20 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+    Metoda Jacobiego potrzebowała tutaj 23 iteracji:
+      \begin{align*}
+        x^{(23)} = [-0.467532249, -0.515151297, -0.562770344, \\ -0.610389392, -0.658008439, -0.705627487, -0.753246535, \\ -0.800865582, -0.84848463, -0.896103678]
+      \end{align*}
+      $$ e = 2.9803581 \cdot 10^{-7} $$
+      
+      Polecenie: \texttt{./program -peya -20 -p 0.0000005 -v 10 3 4 5 6 7 8 9 10 11 12 -j}
+      
+    \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = 10000 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+    Program zwrócił wynik juz po 5 iteracjach:
+      
+    \begin{align*}
+        x^{(5)} = [0.000299280602, 0.000399290603, 0.000499300604, \\ 0.000599310605, 0.000699320606, 0.000799330607, 0.000899340608, \\ 0.000999350609, 0.00109936061, 0.00119937061]
+      \end{align*}
+      $$ e = 1.09501748 \cdot 10^{-7} $$
+      
+      Polecenie: \texttt{./program -peya 10000 -p 0.0000005 -v 10 3 4 5 6 7 8 9 10 11 12 -j} 
+      
   \end{itemize}
 \subsubsection{Metoda Gaussa-Seidla}
   Ten algorytm dał parę interesujących wyników:
@@ -111,14 +139,26 @@ Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10
       
       Polecenie: \texttt{./program -peya 1 -p 0.0000005 -v 5 3 4 5 6 7 -gs}
       
+    \item $ n = 3 $, $ b = [2, 3, 4]^T$, $ d = 2 $, $ \epsilon = 5 \cdot 10^{-7} $
+    
+      Ten algorytm, w przeciwieństwie do metody Jacobiego daje dla tej niezbyt 
+      dobrze uwarunkowanej macierzy, dość szybko oczekiwane przyblizenie (16 iteracji):
+      
+      $$ x^{(16)} = [-0.250000011, 0.750000171, 1.74999992] $$
+      
+      $$ e = 1.82909527 \cdot 10^{-7} $$
+      
+      Polecenie: \texttt{./program -peya 2 -p 0.0000005 -v 3 2 3 4 -gs}
+      
     \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = -20 $, $ \epsilon = 5 \cdot 10^{-7} $
       
       Zadowalajacy wynik w tym wypadku osiągamy bardzo szybko - zaledwie 12 iteracji.
+      
       \begin{align*}
         x^{(12)} = [-0.467532, -0.515151, -0.56277, -0.610389, -0.658008, \\ -0.705627, -0.753247, -0.800866, -0.848485, -0.896104]
       \end{align*}
-      $$ e = 2.98036 \cdot 10^{-7} $$
       
+      $$ e = 2.98036 \cdot 10^{-7} $$
       Polecenie: \texttt{./program -peya -20 -p 0.0000005 -v 10 3 4 5 6 7 8 9 10 11 12 -gs}
       
     \item $ n = 10 $, $ b = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]^T$, $ d = 10000 $, $ \epsilon = 5 \cdot 10^{-7} $
