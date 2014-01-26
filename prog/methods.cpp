@@ -1,15 +1,14 @@
 #include "methods.h"
 #include "matrix.h"
-#include "cmath"
 
-void jacobi_method(Matrix & m, std::vector<double> & b, double precision) {
+ void jacobi_method(Matrix & m, std::vector<double> & b, double precision) {
   Matrix D = m.D();
   Matrix L = m.L();
   Matrix U = m.U();
   Matrix N = m.N();
-  Matrix M = (N * (-1.0)) * (L + U);
-
-  std::vector<double> current(b.size(), 0.0);
+  Matrix M = N * (-1.0) * (L + U);
+  
+  std::vector<double> current(b.size(), 20);
   std::vector<double> next;
   int iteration = 0;
   double error;

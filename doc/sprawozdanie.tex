@@ -31,7 +31,7 @@ Wykonać obliczenia kontrolne m. in. dla macierzy Pei i Hillberta i omówić wyn
 podając wartość $ \norm{b - A \tilde{x}}_{\infty} $, gdzie $ \tilde{x} $ jest 
 obliczonym rozwiązaniem, jak również przyjmując różne wartości parametrów $n$ i $d$. 
 Można założyć, że rozwiązaniem dokładnym jest wektor $ e := [1,1,...,1]^T $ lub, 
-inaczej mówiąc, że $ b := Ae $.
+inaczej mówiąc, że $ b := Ae $. Obliczenia wykonać dla $ \epsilon = 5 \cdot 10^{-5} $ i $ \epsilon = 5 \cdot 10^{-7} $.
 
 \section{Algorytmy}
 \subsection{Metoda Jacobiego}
@@ -39,25 +39,25 @@ inaczej mówiąc, że $ b := Ae $.
   rozwiązania układu równań $ Ax = b $ znajdujemy poprzez rozwiązanie poniższego 
   równania na macierzach:
   
-  $$ x^{k+1} = Mx^k + Nb $$
+  $$ x_{k+1} = Mx_k + Nb $$
   gdzie:
   $$ N = D^{-1} $$
   $$ M = -N(L+U) $$
   $$ 
-  D[i,j] =  \left\{\begin{array}{l l}
-        A[i,j] & \quad i=j \\
+  D_{ij} =  \left\{\begin{array}{l l}
+        A_{ij} & \quad i=j \\
         0 & \quad \textrm{w p. p.}
         \end{array}\right.
   $$
   $$
-  L[i,j] =  \left\{\begin{array}{l l}
-        A[i,j] & \quad i < j \\
+  L_{ij} =  \left\{\begin{array}{l l}
+        A_{ij} & \quad i < j \\
         0 & \quad \textrm{w p. p.}
         \end{array}\right.
   $$
   $$
-  U[i,j] = \left\{\begin{array}{l l}
-        A[i,j] & \quad i > j \\
+  U_{ij} = \left\{\begin{array}{l l}
+        A_{ij} & \quad i > j \\
         0 & \quad \textrm{w p. p.}
         \end{array}\right.
   $$
@@ -67,16 +67,54 @@ inaczej mówiąc, że $ b := Ae $.
   \textbf{Metoda Gaussa-Seidla} różni się od poprzedniej tylko wzorem, za 
   pomocą którego wyznaczamy następne iteracje:
   
-  $$ x^{k+1} = Nb + -NLx^k - NUx^k $$
+  $$ x_{k+1} = Nb + -NLx_k - NUx_k $$
 
 \section{Przykładowe rozwiązania}
 \subsection{Macierz Pei}
+  \textbf{Macierz Pei} jest zdefiniowana w następujący sposób:
+    $$
+        P_{ij} = \left\{\begin{array}{l l}
+            d & \quad i = j \\
+            1 & \quad \textrm{w p. p.}
+        \end{array}\right.
+    $$
+    , gdzie $d$ jest podanym parametrem rzeczywistym, a $ (i, j = 1, 2, \dots, n) $. 
 \subsubsection{Metoda Jacobiego}
 \subsubsection{Metoda Seidla}
 
 \subsection{Macierz Hillberta}
+  \textbf{Macierz Hillberta} jest dana następujacym wzorem:
 \subsubsection{Metoda Jacobiego}
 \subsubsection{Metoda Seidla}
+
+\section{Kompilacja i obsługa programu}
+    \subsection{Wymagania}
+    Aby skompilować program należy spełnić następujące wymagania dotyczące oprogramowania:
+    \begin{itemize}
+      \item kompilator $ G\!+\!+ $ w wersji 4.7 lub późniejszej - kompilator musi obsługiwać standard $ C^{++}11 $,
+      \item obecność narzędzia GNU Make
+    \end{itemize}
+    Powyższe wymagania powinny być automatycznie spełnione w każdej aktualnej dystrybucji GNU/Linux.
+    
+    \subsection{Kompilacja}
+    Należy przejść do katalogu \texttt{prog} i wykonać polecenie \texttt{make} - kompilacja wykona się automatycznie. W pliku \texttt{Makefile} podane są polecenia, które należy wykonać aby skompilować program ręcznie.
+    
+    \subsection{Obsługa programu}
+    Program uruchamiamy za pomocą pliku \texttt{program}, po jego nazwie podając ciąg będący kombinacją ponizszych parametrów:
+    \begin{itemize}
+      \item \texttt{-peya <d>} -- użycie macierzy Pei z parametrem d
+      \item \texttt{-hillbert} -- użycie macierzy Hillberta
+      \item \texttt{-p <e>} -- definicja wielkości $\epsilon$
+      \item \texttt{-j} -- użycie metody Jacobiego
+      \item \texttt{-gs} -- użycie metody Gaussa-Seidla
+      \item \texttt{-v <n>} $b_0$ $b_1$ \dots $b_n$ -- podanie rozmiaru macierzy kwadratowej/wektora $b$ i podanie wartości wektora $b$
+      
+    \end{itemize}
+    
+    Przykład: szukamy przybliżonego rozwiązania dla macierzy hillberta, gdzie $ n = 4 $, $ b = [465, 6, 7, -55]^T $, używając metody Gaussa-Seidla i precyzji $ \epsilon = 5 \cdot 10^{-5} $.
+    \begin{center}
+      \texttt{./program -hillbert -p 0.00005 -v 4 465 6 7 -55 -gs}
+    \end{center}
 
  
 \end{document}

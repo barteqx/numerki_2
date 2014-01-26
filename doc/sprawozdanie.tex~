@@ -35,8 +35,39 @@ inaczej mówiąc, że $ b := Ae $.
 
 \section{Algorytmy}
 \subsection{Metoda Jacobiego}
-
-\subsection{Metoda Seidla}
+  \textbf{Metoda Jacobiego} jest metodą iteracyjną, gdzie kolejne przybliżenia 
+  rozwiązania układu równań $ Ax = b $ znajdujemy poprzez rozwiązanie poniższego 
+  równania na macierzach:
+  
+  $$ x^{k+1} = Mx^k + Nb $$
+  gdzie:
+  $$ N = D^{-1} $$
+  $$ M = -N(L+U) $$
+  $$ 
+  D[i,j] =  \left\{\begin{array}{l l}
+        A[i,j] & \quad i=j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  $$
+  L[i,j] =  \left\{\begin{array}{l l}
+        A[i,j] & \quad i < j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  $$
+  U[i,j] = \left\{\begin{array}{l l}
+        A[i,j] & \quad i > j \\
+        0 & \quad \textrm{w p. p.}
+        \end{array}\right.
+  $$
+  Natomiast $ x^0 $ jest wektorem zerowym.
+  
+\subsection{Metoda Gaussa-Seidla}
+  \textbf{Metoda Gaussa-Seidla} różni się od poprzedniej tylko wzorem, za 
+  pomocą którego wyznaczamy następne iteracje:
+  
+  $$ x^{k+1} = Nb + -NLx^k - NUx^k $$
 
 \section{Przykładowe rozwiązania}
 \subsection{Macierz Pei}

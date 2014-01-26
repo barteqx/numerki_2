@@ -31,8 +31,9 @@ void Matrix::operator=(const Matrix& rhs) {
 Matrix Matrix::operator+(const Matrix& rhs) {
   Matrix new_matrix(size, 0.0);
   for(int i = 0; i < size; i++) {
-    for (int j = 0; j < size; j++) 
-      new_matrix.mat[i][j] == mat[i][j] + rhs.mat[i][j];
+    for (int j = 0; j < size; j++) {
+      new_matrix.mat[i][j] = mat[i][j] + rhs.mat[i][j];
+    }
   }
 
   return new_matrix;
@@ -42,7 +43,7 @@ Matrix Matrix::operator-(const Matrix& rhs) {
   Matrix new_matrix(size, 0.0);
   for(int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) 
-      new_matrix.mat[i][j] == mat[i][j] - rhs.mat[i][j];
+      new_matrix.mat[i][j] = mat[i][j] - rhs.mat[i][j];
   }
 
   return new_matrix;
@@ -74,7 +75,7 @@ Matrix Matrix::operator*(const Matrix& rhs) {
   Matrix new_matrix(size, 0.0);
   for (int i = 0; i < size; i++) {
     for(int j = 0; j < size; j++) {
-      for (int k =0; k < size; k++) {
+      for (int k = 0; k < size; k++) {
         new_matrix.mat[i][j] += mat[i][k] * rhs.mat[k][j]; 
       }
     }
@@ -147,8 +148,8 @@ PeyaMatrix::PeyaMatrix(unsigned int _size, double d) : Matrix(_size, 0.0) {
 }
 
 double norm_inf(std::vector<double> & vec) {
-  double max = vec[0];
-  for (int i = 1; i < vec.size(); i++) if (vec[i] > max) max = vec[i];
+  double max = fabs(vec[0]);
+  for (int i = 1; i < vec.size(); i++) if (fabs(vec[i]) > max) max = fabs(vec[i]);
   return max;
 }
 
