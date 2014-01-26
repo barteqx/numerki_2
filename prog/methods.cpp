@@ -1,5 +1,6 @@
 #include "methods.h"
 #include "matrix.h"
+#include "cmath"
 
 void jacobi_method(Matrix & m, std::vector<double> & b, double precision) {
   Matrix D = m.D();
@@ -11,16 +12,19 @@ void jacobi_method(Matrix & m, std::vector<double> & b, double precision) {
   std::vector<double> current(b.size(), 0.0);
   std::vector<double> next;
   int iteration = 0;
+  double error;
 
   do {
     iteration++;
     next = M*current + N*b;
-    double error = norm_inf(next - current)/norm_inf(next);
+    std::vector<double> e = next - current;
+    error = norm_inf(e)/norm_inf(next);
     std::cout << iteration << ": " << next << " error: " << error << std::endl;
-  } while (error >= precision);
+    current = next;
+  } while (fabs(error) >= precision);
 }
 
-void gauss_siedel_method(Matrix & m, std::vector<double> & b, double precision) {
+void gauss_seidel_method(Matrix & m, std::vector<double> & b, double precision) {
   Matrix D = m.D();
   Matrix L = m.L();
   Matrix U = m.U();
@@ -28,11 +32,16 @@ void gauss_siedel_method(Matrix & m, std::vector<double> & b, double precision) 
 
   std::vector<double> current(b.size(), 0.0);
   std::vector<double> next;
+  int iteration = 0;
+  double error;
 
   do {
+    iteration++;
     next = N*b - (N*L)*current - (N*U)*current;
-    double error = norm_inf(next - current)/norm_inf(next);
-    std::cout << next << " error: " << error << std::endl;
-  } while (error >= precision);
+    std::vector<double> e = next - current;
+    error = norm_inf(e)/norm_inf(next);
+    std::cout << iteration << ": " << next << " error: " << error << std::endl;
+    current = next;
+  } while (fabs(error) >= precision);
 
 }

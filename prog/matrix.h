@@ -3,9 +3,10 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class Matrix {
- private:
+ protected:
   std::vector<std::vector<double> > mat;
   unsigned int size;
 
@@ -39,24 +40,23 @@ class Matrix {
   // Access the row and column sizes                                                                                                                                                                                              
   unsigned int get_size() const;
 
-  std::ostream& operator<<(std::ostream& out, Matrix & m);
 };
 
 class HillbertMatrix : public Matrix {
-
+public:
     HillbertMatrix(unsigned int _size);
 };
 
 class PeyaMatrix : public Matrix {
-
+public:
     PeyaMatrix(unsigned int _size, double d);
 };
 
-double norm_inf(vector<double> & vec);
+double norm_inf(std::vector<double> & vec);
 
-std::vector<double> operator-(const std::vector<double> & lhs, const std::vector<double> & rhs);
+const std::vector<double> operator-(const std::vector<double> & lhs, const std::vector<double> & rhs);
 
-std::vector<double> operator+(const std::vector<double> & lhs, const std::vector<double> & rhs);
+const std::vector<double> operator+(const std::vector<double> & lhs, const std::vector<double> & rhs);
 
 std::ostream& operator<<(std::ostream& out, const std::vector<double>& vec);
 
